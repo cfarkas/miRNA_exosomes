@@ -48,6 +48,9 @@ End-to-end pipeline to analyze miRNA count matrices (e.g., small RNA-seq counts)
 ### 1.1 Create the conda environment (R + Bioconductor)
 
 ```bash
+git clone https://github.com/cfarkas/miRNA_exosomes.git
+cd miRNA_exosomes
+
 conda env create -f env/RUVSeq_env.yml
 conda activate RUVSeq_env
 ```
@@ -78,7 +81,7 @@ Paired analysis is attempted when sample names end with a numeric suffix:
 
 ### 3.1 Recommended run for this project: **without sample2**
 
-This reproduces the analysis excluding `Ctrl_2` and `Olig_2`.
+This reproduces the analysis excluding `Ctrl_2` and `Olig_2`. Inside ```miRNA_exosomes``` repository
 
 ```bash
 mkdir -p results
@@ -95,7 +98,9 @@ Key outputs:
 - `results/without_sample2/04_volcano/Volcano_EnhancedVolcano_paired.pdf` (only if pairs can be inferred)
 - `results/without_sample2/07_seed_conservation/Seed_m8_conservation_up_positive.pdf`
 
-### 3.2 All samples
+### 3.2 All samples. 
+
+Inside ```miRNA_exosomes``` repository: 
 
 ```bash
 Rscript scripts/run_mirna_pipeline.R \
@@ -104,6 +109,8 @@ Rscript scripts/run_mirna_pipeline.R \
 ```
 
 ## 4) Python post-processing (TF/immune heatmaps + Sankey)
+
+Inside ```miRNA_exosomes``` repository:
 
 ```bash
 python3 scripts/tf_immune_analysis.py \
@@ -120,17 +127,9 @@ Outputs:
 - `results/without_sample2/07_tf_immune/sankey/tf_immune_sankey.html`
 - `results/without_sample2/07_tf_immune/tables/immune_pathways_ranked_GO_REAC.csv`
 
-(If you prefer the legacy script you previously shared)
-
-```bash
-python3 scripts/tf_immune_heatmaps_ranked_table.py \
-  --input results/without_sample2/06_enrichment/GO_Terms \
-  --outdir results/without_sample2/07_tf_immune_legacy
-```
-
 ## 5) Optional: cross-species mouse validation (seed conservation + mouse enrichment)
 
-This script supports cross-species validation by mapping human DE miRNAs to a TargetScan-style miRNA family table and then running a seed-scan in mouse 3'UTRs.
+This script supports cross-species validation by mapping human DE miRNAs to a TargetScan-style miRNA family table and then running a seed-scan in mouse 3'UTRs. Inside ```miRNA_exosomes``` repository
 
 ```bash
 Rscript scripts/cross_species_mouse_seed_enrichment.R \
