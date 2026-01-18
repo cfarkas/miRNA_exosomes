@@ -1,0 +1,8 @@
+# Python dependencies for post-processing (TF/immune heatmaps + Sankey)
+# Tested with Python >=3.9
+pandas
+numpy
+seaborn
+matplotlib
+plotly
+kaleido

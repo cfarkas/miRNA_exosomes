@@ -1,0 +1,25 @@
+name: RUVSeq_env
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - r-base=4.3.*
+  - r-biocmanager
+  - r-readr
+  - r-ggplot2
+  - r-dplyr
+  - r-car
+  - r-mass
+  - r-rcolorbrewer
+  - r-gplots
+  - r-viridis
+  - r-tidyverse
+  - r-factominer
+  - r-factoextra
+  - r-reshape2
+  - r-gprofiler2
+  - r-ggrepel
+  - bioconductor-ruvseq
+  - bioconductor-edger
+  - bioconductor-multimir
+  - bioconductor-enhancedvolcano

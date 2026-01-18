@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+message: >-
+  If you use this pipeline in your work, please cite this software repository
+  and the underlying methods/software packages (RUVSeq, edgeR, multiMiR,
+  g:Profiler, EnhancedVolcano).
+title: "miRNA differential expression pipeline (RUVSeq + edgeR)"
+version: 0.1.0
+date-released: "2026-01-18"
+license: MIT
+repository-code: "https://github.com/<your-org>/<your-repo>"
+authors:
+  - name: "<Add author name>"
