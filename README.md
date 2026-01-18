@@ -2,7 +2,7 @@
 
 End-to-end pipeline to analyze miRNA count matrices (e.g., small RNA-seq counts) comparing **Control (Ctrl)** vs **Oligomycin (Olig)**.
 
-## What this repo provides
+## What this repository provides
 
 - **Normalization** with **RUVSeq** (`RUVr`) to estimate/remove unwanted variation.
 - **Differential expression** with **edgeR**:
