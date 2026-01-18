@@ -729,24 +729,45 @@ if (target_mode != "none") {
 # ---------------------------
 pdf_out <- file.path(fig_dir, "cross_species_seed_conservation_and_mouse_enrichment.pdf")
 
-p1 <- sel %>%
-  mutate(miRNA_label = factor(miRNA_label, levels = miRNA_label[order(n_mouse_miRNAs_same_seed, decreasing = TRUE)])) %>%
-  ggplot(aes(x = miRNA_label, y = n_mouse_miRNAs_same_seed, fill = has_mouse_seed_match)) +
-  geom_col(width = 0.85, color = "black", linewidth = 0.2) +
-  coord_flip() +
-  scale_fill_manual(values = c("TRUE" = "#2E7D32", "FALSE" = "grey70"),
-                    name = "Seed conserved\n(human->mouse)") +
-  labs(
-    title = "Seed (m8) conservation: human DE miRNAs vs mouse miRNAs",
-    subtitle = paste0("Selection: ", direction, " (FDR≤", fdr_cut, ", |logFC|≥", logfc_cut, ")"),
-    x = NULL,
-    y = "# mouse miRNAs with identical seed"
-  ) +
-  theme_bw(base_size = 12) +
-  theme(
-    legend.position = "right",
-    plot.title = element_text(face = "bold")
-  )
+##
+## Seed (m8) conservation plot
+##   - User requested: show ONLY positive/conserved seeds (no empty/zero rows)
+##   - Render all bars in green, no TRUE/FALSE legend
+##
+p1_df <- sel %>%
+  filter(!is.na(n_mouse_miRNAs_same_seed)) %>%
+  filter(n_mouse_miRNAs_same_seed > 0)
+
+if (nrow(p1_df) == 0) {
+  p1 <- ggplot() +
+    theme_void() +
+    labs(
+      title = "Seed (m8) conservation: human DE miRNAs vs mouse miRNAs",
+      subtitle = paste0("Selection: ", direction, " (FDR≤", fdr_cut, ", |logFC|≥", logfc_cut, ")\nNo conserved seeds found (n_mouse = 0 for all selected miRNAs).")
+    )
+} else {
+  # Order by number of mouse miRNAs sharing the seed (then by significance)
+  p1_df <- p1_df %>%
+    arrange(desc(n_mouse_miRNAs_same_seed), FDR, desc(abs(logFC)))
+  p1_df$miRNA_label <- factor(p1_df$miRNA_label, levels = rev(p1_df$miRNA_label))
+
+  p1 <- ggplot(p1_df, aes(x = miRNA_label, y = n_mouse_miRNAs_same_seed)) +
+    geom_col(fill = "#2E7D32", color = "black", width = 0.85, linewidth = 0.2) +
+    coord_flip() +
+    scale_y_continuous(breaks = seq(0, max(p1_df$n_mouse_miRNAs_same_seed, na.rm = TRUE), by = 1)) +
+    labs(
+      title = "Seed (m8) conservation: human DE miRNAs vs mouse miRNAs",
+      subtitle = paste0("Selection: ", direction, " (FDR≤", fdr_cut, ", |logFC|≥", logfc_cut, ")"),
+      x = NULL,
+      y = "# mouse miRNAs with identical seed"
+    ) +
+    theme_bw(base_size = 12) +
+    theme(
+      legend.position = "none",
+      plot.title = element_text(face = "bold"),
+      axis.text.y = element_text(size = 7)
+    )
+}
 
 p2_data <- NULL
 if (is.data.frame(enrich_immune) && nrow(enrich_immune) > 0) {
